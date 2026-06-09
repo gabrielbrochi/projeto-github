@@ -2,19 +2,28 @@
 require('dotenv').config();
 
 const express = require('express');
-const helmet = require('helmet');
 const cors = require('cors');
-const compression = require('compression');
+const { loggerRequisicoes, morganMiddleware } = require('./config/logger');
 
 const app = express();
 
-// Middlewares de segurança e performance
-app.use(helmet());
+// Headers de segurança manuais (substitui helmet)
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  next();
+});
+
 app.use(cors({
   origin: process.env.CORS_ORIGEM || 'http://localhost:5173'
 }));
-app.use(compression());
 app.use(express.json());
+
+// Middlewares de logging
+app.use(loggerRequisicoes);
+app.use(morganMiddleware);
 
 // Rotas da aplicação
 const authRoutes = require('./routes/authRoutes');

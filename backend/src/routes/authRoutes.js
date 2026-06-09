@@ -4,10 +4,10 @@ require('dotenv').config();
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const sanitizarEntrada = require('../middlewares/sanitizacao');
-const limitadorLogin = require('../middlewares/rateLimiter');
+const sanitizarEntrada = require('../config/sanitizacao');
+const limitadorLogin = require('../config/rateLimiter');
 const usuarioModel = require('../models/usuarioModel');
-const logger = require('../config/logger');
+const { logger } = require('../config/logger');
 
 const roteador = express.Router();
 

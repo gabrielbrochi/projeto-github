@@ -1,17 +1,13 @@
-// Configuração do cache em memória com node-cache
 require('dotenv').config();
-const NodeCache = require('node-cache');
+const { createClient } = require('redis');
 
-// TTL padrão via variável de ambiente (em segundos)
-const ttlPadrao = parseInt(process.env.CACHE_TTL, 10) || 300;
-
-// Período de verificação de expiração (em segundos)
-const periodoVerificacao = 60;
-
-// Instância singleton do cache
-const cache = new NodeCache({
-  stdTTL: ttlPadrao,
-  checkperiod: periodoVerificacao
+const cliente = createClient({
+  url: process.env.REDIS_URL || 'redis://localhost:6379'
 });
 
-module.exports = cache;
+cliente.on('error', (err) => console.error('Erro Redis:', err));
+
+// Conectar ao Redis
+cliente.connect().catch(console.error);
+
+module.exports = cliente;
