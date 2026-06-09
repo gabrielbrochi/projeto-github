@@ -17,8 +17,11 @@ app.use(compression());
 app.use(express.json());
 
 // Rotas da aplicação
-// app.use('/api/auth', authRoutes);
-// app.use('/api/perfis', perfisRoutes);
+const authRoutes = require('./routes/authRoutes');
+const perfisRoutes = require('./routes/perfisRoutes');
+
+app.use('/api/auth/login', authRoutes);
+app.use('/api/perfis', perfisRoutes);
 
 // Middleware de erro global (deve ser o último)
 app.use((erro, req, res, next) => {
