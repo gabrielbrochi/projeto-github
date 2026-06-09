@@ -1,7 +1,5 @@
 node_modules/
 dist/
-.env
-.env.local
 .kiro/
 .DS_Store
 Thumbs.db
