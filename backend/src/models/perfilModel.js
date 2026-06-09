@@ -1,16 +1,6 @@
-// Model de perfis do GitHub - operações no banco de dados
-// Funções para buscar e inserir perfis com seus repositórios
-
 const pool = require('../config/banco');
 
-/**
- * Busca perfis no banco de dados cujo login corresponde ao termo (case-insensitive).
- * Para cada perfil encontrado, inclui seus repositórios associados.
- * @param {string} termo - Termo de busca para filtrar por login (ILIKE)
- * @returns {Promise<Array>} Array de perfis com repositórios embutidos
- */
 async function buscarPerfis(termo) {
-  // Consulta parametrizada com ILIKE para busca case-insensitive
   const consultaPerfis = `
     SELECT id, login, nome, avatar_url, bio, seguidores, seguindo,
            repositorios_publicos, criado_em_github, inserido_em, inserido_por
@@ -21,7 +11,6 @@ async function buscarPerfis(termo) {
 
   const resultadoPerfis = await pool.query(consultaPerfis, [`%${termo}%`]);
 
-  // Para cada perfil, buscar seus repositórios associados
   const perfisComRepositorios = await Promise.all(
     resultadoPerfis.rows.map(async (perfil) => {
       const consultaRepositorios = `
@@ -42,21 +31,12 @@ async function buscarPerfis(termo) {
   return perfisComRepositorios;
 }
 
-/**
- * Insere um perfil com seus repositórios no banco de dados usando transação atômica.
- * Se qualquer operação falhar, faz ROLLBACK e lança o erro.
- * @param {object} dadosPerfil - Dados do perfil (login, nome, avatar_url, bio, etc.)
- * @param {Array} repositorios - Array de repositórios ({nome, linguagem, url})
- * @param {number} usuarioId - ID do usuário que está inserindo (inserido_por)
- * @returns {Promise<object>} Perfil inserido com seus repositórios
- */
 async function inserirPerfil(dadosPerfil, repositorios, usuarioId) {
   const cliente = await pool.connect();
 
   try {
     await cliente.query('BEGIN');
 
-    // Inserir perfil na tabela perfis_github
     const consultaInsercaoPerfil = `
       INSERT INTO perfis_github (login, nome, avatar_url, bio, seguidores, seguindo,
                                  repositorios_publicos, criado_em_github, inserido_por)
@@ -80,7 +60,6 @@ async function inserirPerfil(dadosPerfil, repositorios, usuarioId) {
     const resultadoPerfil = await cliente.query(consultaInsercaoPerfil, valoresPerfil);
     const perfilInserido = resultadoPerfil.rows[0];
 
-    // Inserir repositórios associados ao perfil
     const repositoriosInseridos = [];
 
     for (const repo of repositorios) {

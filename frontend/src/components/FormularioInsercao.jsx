@@ -22,10 +22,8 @@ export default function FormularioInsercao() {
   const [repositorios, setRepositorios] = useState([{ ...repositorioVazio }])
   const [errosValidacao, setErrosValidacao] = useState({})
 
-  // Atualiza campo do perfil
   const atualizarPerfil = (campo, valor) => {
     setPerfil(anterior => ({ ...anterior, [campo]: valor }))
-    // Limpa erro de validação do campo ao digitar
     if (errosValidacao[campo]) {
       setErrosValidacao(anterior => {
         const novo = { ...anterior }
@@ -35,12 +33,10 @@ export default function FormularioInsercao() {
     }
   }
 
-  // Atualiza campo de um repositório específico
   const atualizarRepositorio = (indice, campo, valor) => {
     setRepositorios(anterior =>
       anterior.map((repo, i) => (i === indice ? { ...repo, [campo]: valor } : repo))
     )
-    // Limpa erro de validação do repositório ao digitar
     const chaveErro = `repositorios[${indice}].${campo}`
     if (errosValidacao[chaveErro]) {
       setErrosValidacao(anterior => {
@@ -51,30 +47,25 @@ export default function FormularioInsercao() {
     }
   }
 
-  // Adiciona novo repositório vazio
   const adicionarRepositorio = () => {
     setRepositorios(anterior => [...anterior, { ...repositorioVazio }])
   }
 
-  // Remove repositório pelo índice (mínimo 1)
   const removerRepositorio = (indice) => {
     if (repositorios.length <= 1) return
     setRepositorios(anterior => anterior.filter((_, i) => i !== indice))
   }
 
-  // Limpa o formulário após sucesso
   const limparFormulario = () => {
     setPerfil({ ...perfilInicial })
     setRepositorios([{ ...repositorioVazio }])
     setErrosValidacao({})
   }
 
-  // Submete o formulário
   const handleSubmit = async (evento) => {
     evento.preventDefault()
     setErrosValidacao({})
 
-    // Monta objeto do perfil com tipos corretos
     const dadosPerfil = {
       login: perfil.login.trim(),
       nome: perfil.nome.trim(),
@@ -86,7 +77,6 @@ export default function FormularioInsercao() {
       criado_em_github: perfil.criado_em_github
     }
 
-    // Monta array de repositórios
     const dadosRepositorios = repositorios.map(repo => ({
       nome: repo.nome.trim(),
       linguagem: repo.linguagem.trim(),
@@ -97,7 +87,6 @@ export default function FormularioInsercao() {
       await inserirNovoPerfil(dadosPerfil, dadosRepositorios)
       limparFormulario()
     } catch (error) {
-      // Se o erro contém campos de validação, exibe nos campos
       if (error && error.campos) {
         setErrosValidacao(error.campos)
       }
@@ -122,7 +111,6 @@ export default function FormularioInsercao() {
         )}
 
         <Form onSubmit={handleSubmit}>
-          {/* Seção: Dados do Perfil */}
           <h6 className="text-uppercase text-muted fw-bold mb-3" style={{ fontSize: '0.8rem', letterSpacing: '1px' }}>
             Dados do Perfil
           </h6>
@@ -270,7 +258,6 @@ export default function FormularioInsercao() {
             </Col>
           </Row>
 
-          {/* Seção: Repositórios */}
           <h6 className="text-uppercase text-muted fw-bold mb-3 mt-4" style={{ fontSize: '0.8rem', letterSpacing: '1px' }}>
             Repositórios
           </h6>
@@ -359,7 +346,6 @@ export default function FormularioInsercao() {
             </Button>
           </div>
 
-          {/* Botão de submissão */}
           <Button
             variant="dark"
             type="submit"

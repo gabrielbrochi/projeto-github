@@ -1,5 +1,3 @@
-// Rotas de perfis - GET /api/perfis (busca) e POST /api/perfis (inserção)
-
 const express = require('express');
 const autenticacao = require('../config/autenticacao');
 const sanitizarEntrada = require('../config/sanitizacao');
@@ -9,10 +7,8 @@ const { logger } = require('../config/logger');
 
 const roteador = express.Router();
 
-// Todas as rotas deste arquivo exigem autenticação
 roteador.use(autenticacao);
 
-// Função de validação manual (substitui express-validator)
 function validarPerfil(perfil, repositorios) {
   const erros = {};
 
@@ -42,13 +38,10 @@ function validarPerfil(perfil, repositorios) {
   return Object.keys(erros).length > 0 ? erros : null;
 }
 
-// GET / - Busca de perfis por termo
-// Rota completa: GET /api/perfis?busca=termo
 roteador.get('/', async (req, res) => {
   try {
     const { busca } = req.query;
 
-    // Validar que o parâmetro de busca foi fornecido
     if (!busca || busca.trim() === '') {
       return res.status(400).json({ erro: 'Parâmetro de busca é obrigatório' });
     }
@@ -56,7 +49,6 @@ roteador.get('/', async (req, res) => {
     const termo = busca.trim();
     const chaveCache = `busca:${termo.toLowerCase()}`;
 
-    // Verificar cache (Redis - assíncrono)
     const dadosCacheStr = await cache.get(chaveCache);
     if (dadosCacheStr) {
       const dadosCache = JSON.parse(dadosCacheStr);
@@ -66,17 +58,13 @@ roteador.get('/', async (req, res) => {
       });
     }
 
-    // Cache miss - consultar banco via model
     const perfis = await perfilModel.buscarPerfis(termo);
 
-    // Salvar resultados no cache (Redis setEx com TTL)
     const ttl = parseInt(process.env.CACHE_TTL) || 300;
     await cache.setEx(chaveCache, ttl, JSON.stringify(perfis));
 
-    // Registrar busca no logger
     logger.info('Busca realizada', { usuario: req.usuario.login, termo });
 
-    // Retornar resultados (array vazio com mensagem informativa se nenhum encontrado)
     const mensagem = perfis.length === 0
       ? 'Nenhum perfil encontrado'
       : `${perfis.length} perfil(is) encontrado(s)`;
@@ -88,13 +76,10 @@ roteador.get('/', async (req, res) => {
   }
 });
 
-// POST / - Inserção de perfil com repositórios
-// Rota completa: POST /api/perfis
 roteador.post('/', sanitizarEntrada, async (req, res) => {
   try {
     const { perfil, repositorios } = req.body;
 
-    // Validação manual dos dados
     const errosValidacao = validarPerfil(perfil, repositorios);
     if (errosValidacao) {
       return res.status(400).json({
@@ -103,19 +88,15 @@ roteador.post('/', sanitizarEntrada, async (req, res) => {
       });
     }
 
-    // Inserir via model com transação
     const resultado = await perfilModel.inserirPerfil(perfil, repositorios, req.usuario.id);
 
-    // Invalidar cache relacionado (todas as chaves de busca)
     const chaves = await cache.keys('busca:*');
     for (const c of chaves) {
       await cache.del(c);
     }
 
-    // Registrar inserção no logger
     logger.info('Perfil inserido', { usuario: req.usuario.login, perfilLogin: resultado.login });
 
-    // Separar perfil dos repositórios na resposta
     const { repositorios: reposInseridos, ...perfilInserido } = resultado;
 
     return res.status(201).json({

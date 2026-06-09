@@ -7,9 +7,6 @@ import FormularioInsercao from './components/FormularioInsercao'
 import TelaLogin from './components/TelaLogin'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
-/**
- * Componente raiz - envolve tudo com os Providers de autenticação e dados.
- */
 export default function App() {
   return (
     <AuthProvider>
@@ -20,9 +17,6 @@ export default function App() {
   )
 }
 
-/**
- * Decide qual tela renderizar com base no estado de autenticação.
- */
 function ConteudoApp() {
   const { autenticado } = useContext(AuthContext)
 
@@ -33,10 +27,6 @@ function ConteudoApp() {
   return <TelaPrincipal />
 }
 
-/**
- * Tela principal com busca de perfis, exibição de resultados e inserção.
- * Usa abas (Tab) para separar "Buscar" e "Inserir".
- */
 function TelaPrincipal() {
   const { usuario, realizarLogout } = useContext(AuthContext)
   const {
@@ -53,13 +43,11 @@ function TelaPrincipal() {
   const inputRef = useRef(null)
   const [abaAtiva, setAbaAtiva] = useState('buscar')
 
-  // Limpa mensagem de sucesso ao trocar de aba
   const handleTrocarAba = (novaAba) => {
     setMensagemSucesso('')
     setAbaAtiva(novaAba)
   }
 
-  // Executa busca de perfis pelo termo digitado
   const handleBuscar = async (evento) => {
     evento.preventDefault()
 
@@ -74,7 +62,6 @@ function TelaPrincipal() {
     await pesquisarPerfis(termo)
   }
 
-  // Limpa resultados e campo de busca
   const limparBusca = () => {
     setPerfisBuscados([])
     setErro('')

@@ -1,11 +1,7 @@
-// Módulo de pool de conexões com PostgreSQL
-// Exporta uma instância singleton do pg.Pool para uso nos models
-
 require('dotenv').config();
 
 const { Pool } = require('pg');
 
-// Configuração do pool de conexões via variáveis de ambiente
 const pool = new Pool({
   host: process.env.DB_HOST,
   port: parseInt(process.env.DB_PORT, 10),

@@ -9,10 +9,6 @@ export const GithubProvider = ({ children }) => {
   const [carregando, setCarregando] = useState(false)
   const [mensagemSucesso, setMensagemSucesso] = useState('')
 
-  /**
-   * Pesquisa perfis no backend pelo termo informado.
-   * @param {string} termo - Termo de busca (login do perfil)
-   */
   async function pesquisarPerfis(termo) {
     setCarregando(true)
     setErro('')
@@ -32,11 +28,6 @@ export const GithubProvider = ({ children }) => {
     }
   }
 
-  /**
-   * Insere um novo perfil com repositórios no backend.
-   * @param {object} perfil - Dados do perfil GitHub
-   * @param {Array} repositorios - Lista de repositórios do perfil
-   */
   async function inserirNovoPerfil(perfil, repositorios) {
     setCarregando(true)
     setErro('')

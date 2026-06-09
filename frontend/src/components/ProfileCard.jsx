@@ -1,11 +1,5 @@
 import { Card, Badge, ListGroup, Button } from 'react-bootstrap';
 
-/**
- * Componente que exibe os dados de um perfil GitHub vindo do backend.
- * Recebe o objeto perfil completo (com repositórios embutidos) via prop.
- *
- * @param {{ perfil: object }} props
- */
 export function ProfileCard({ perfil }) {
     if (!perfil) return null;
 

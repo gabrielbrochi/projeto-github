@@ -7,7 +7,6 @@ const cliente = createClient({
 
 cliente.on('error', (err) => console.error('Erro Redis:', err));
 
-// Conectar ao Redis
 cliente.connect().catch(console.error);
 
 module.exports = cliente;

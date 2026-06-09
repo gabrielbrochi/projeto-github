@@ -2,13 +2,6 @@ import { useState, useContext } from 'react'
 import { Container, Form, Button, Alert, Spinner, Navbar } from 'react-bootstrap'
 import { AuthContext } from '../contexts/AuthContext'
 
-/**
- * Componente de tela de login.
- * Exibe formulário com campos login e senha.
- * Ao submeter, chama realizarLogin() do AuthContext.
- * Se falhar, exibe mensagem de erro do servidor.
- * Se bem-sucedido, o App.jsx redireciona automaticamente com base no estado autenticado.
- */
 export default function TelaLogin() {
   const [login, setLogin] = useState('')
   const [senha, setSenha] = useState('')
@@ -30,8 +23,6 @@ export default function TelaLogin() {
 
     try {
       await realizarLogin(login.trim(), senha)
-      // Login bem-sucedido: o AuthContext atualiza o estado 'autenticado'
-      // e o App.jsx renderiza a tela principal automaticamente
     } catch (err) {
       setErro(err.message || 'Erro ao realizar login. Tente novamente.')
     } finally {
