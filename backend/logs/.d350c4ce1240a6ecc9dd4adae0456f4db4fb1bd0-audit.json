@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "/home/gabriel/Desktop/projeto-github/backend/logs/.d350c4ce1240a6ecc9dd4adae0456f4db4fb1bd0-audit.json",
+    "files": [
+        {
+            "date": 1781006813282,
+            "name": "/home/gabriel/Desktop/projeto-github/backend/logs/seguranca-2026-06-09.log",
+            "hash": "2d7e0d256280af6c3304aefc5cdaf22b9b190f80c5ae1d2f70678943771b2d37"
+        }
+    ],
+    "hashType": "sha256"
+}

@@ -1,0 +1,14 @@
+2026-06-09 13:43:10 [ERROR] Erro no processo de autenticação {"erro":"password authentication failed for user \"postgres\"","ip":"::ffff:127.0.0.1"}
+2026-06-09 13:44:38 [ERROR] Erro no processo de autenticação {"erro":"password authentication failed for user \"postgres\"","ip":"::ffff:127.0.0.1"}
+2026-06-09 13:44:45 [ERROR] Erro no processo de autenticação {"erro":"password authentication failed for user \"postgres\"","ip":"::ffff:127.0.0.1"}
+2026-06-09 13:46:52 [ERROR] Erro no processo de autenticação {"erro":"password authentication failed for user \"postgres\"","ip":"::ffff:127.0.0.1"}
+2026-06-09 13:53:19 [ERROR] Erro no processo de autenticação {"erro":"SASL: SCRAM-SERVER-FIRST-MESSAGE: client password must be a string","ip":"::ffff:127.0.0.1"}
+2026-06-09 13:56:34 [INFO] Login bem-sucedido {"login":"admin","ip":"::ffff:127.0.0.1"}
+2026-06-09 13:56:48 [INFO] Busca realizada {"usuario":"admin","termo":"sapo"}
+2026-06-09 13:56:53 [INFO] Busca realizada {"usuario":"admin","termo":"igns"}
+2026-06-09 13:56:58 [INFO] Busca realizada {"usuario":"admin","termo":"Gabriel"}
+2026-06-09 13:57:02 [INFO] Busca realizada {"usuario":"admin","termo":"watinha"}
+2026-06-09 14:01:44 [INFO] Perfil inserido {"usuario":"admin","perfilLogin":"sapo"}
+2026-06-09 14:01:50 [INFO] Busca realizada {"usuario":"admin","termo":"w"}
+2026-06-09 14:01:51 [INFO] Busca realizada {"usuario":"admin","termo":"a"}
+2026-06-09 14:02:55 [INFO] Login bem-sucedido {"login":"admin","ip":"::ffff:127.0.0.1"}
